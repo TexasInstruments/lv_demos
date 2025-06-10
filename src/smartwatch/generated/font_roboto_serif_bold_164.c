@@ -3,6 +3,13 @@
  * Bpp: 4
  * Opts: --bpp 4 --size 164 --no-compress --font RobotoSerif-Bold.ttf --symbols ° --range 32-127 --format lvgl -o font_roboto_serif_bold_164.c
  ******************************************************************************/
+#ifdef __has_include
+    #if __has_include("lvgl.h")
+        #ifndef LV_LVGL_H_INCLUDE_SIMPLE
+            #define LV_LVGL_H_INCLUDE_SIMPLE
+        #endif
+    #endif
+#endif
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
     #include "lvgl.h"
