@@ -55,9 +55,8 @@ void lv_demo_smartwatch_health_create(void)
         lv_style_set_text_color(&main_style, lv_color_white());
         lv_style_set_bg_color(&main_style, lv_color_hex(0x000000));
         lv_style_set_bg_opa(&main_style, LV_OPA_100);
-        lv_style_set_clip_corner(&main_style, true);
         lv_style_set_radius(&main_style, LV_RADIUS_CIRCLE);
-        lv_style_set_translate_x(&main_style, 384);
+        lv_style_set_translate_x(&main_style, SCREEN_SIZE);
 
     }
 
@@ -89,7 +88,7 @@ void lv_demo_smartwatch_health_create(void)
     lv_obj_set_align(heart_bg_2, LV_ALIGN_CENTER);
     lv_obj_add_flag(heart_bg_2, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_remove_flag(heart_bg_2, LV_OBJ_FLAG_SCROLLABLE);
-
+#if LV_USE_LOTTIE == 1
     extern uint8_t lottie_ecg_wave[];
     extern size_t lottie_ecg_wave_size;
     lottie_ecg = lv_lottie_create(health_screen);
@@ -111,7 +110,7 @@ void lv_demo_smartwatch_health_create(void)
     LV_DRAW_BUF_DEFINE(ecg_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
     lv_lottie_set_draw_buf(lottie_ecg, &ecg_buf);
 #endif
-
+#endif
 
     LV_FONT_DECLARE(font_space_grotesk_regular_28);
     lv_obj_t * label = lv_label_create(health_screen);
@@ -125,8 +124,9 @@ void lv_demo_smartwatch_health_create(void)
     lv_obj_remove_style_all(info_cont);
     lv_obj_set_width(info_cont, 229);
     lv_obj_set_height(info_cont, 116);
+    lv_obj_set_align(info_cont, LV_ALIGN_BOTTOM_LEFT);
     lv_obj_set_x(info_cont, 54);
-    lv_obj_set_y(info_cont, 201);
+    lv_obj_set_y(info_cont, -100);
     lv_obj_remove_flag(info_cont, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);
 
     LV_FONT_DECLARE(font_space_grotesk_regular_23);
@@ -172,12 +172,13 @@ void lv_demo_smartwatch_health_create(void)
     lv_image_set_src(image_button, &image_health_off);
     lv_obj_set_width(image_button, LV_SIZE_CONTENT);
     lv_obj_set_height(image_button, LV_SIZE_CONTENT);
-    lv_obj_set_x(image_button, 270);
-    lv_obj_set_y(image_button, 191);
+    lv_obj_set_align(image_button, LV_ALIGN_BOTTOM_RIGHT);
+    lv_obj_set_x(image_button, -40);
+    lv_obj_set_y(image_button, -40);
     lv_obj_add_flag(image_button, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_remove_flag(image_button, LV_OBJ_FLAG_SCROLLABLE);
 
-
+#if LV_USE_LOTTIE == 1
     extern uint8_t lottie_heart_small[];
     extern size_t lottie_heart_small_size;
     heart_icon = lv_lottie_create(health_screen);
@@ -198,14 +199,12 @@ void lv_demo_smartwatch_health_create(void)
     LV_DRAW_BUF_DEFINE(heart_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
     lv_lottie_set_draw_buf(heart_icon, &heart_buf);
 #endif
-
+#endif
     lv_obj_t * click_cont = lv_obj_create(health_screen);
     lv_obj_remove_style_all(click_cont);
     lv_obj_set_width(click_cont, 63);
     lv_obj_set_height(click_cont, 65);
-    lv_obj_set_x(click_cont, 115);
-    lv_obj_set_y(click_cont, 37);
-    lv_obj_set_align(click_cont, LV_ALIGN_CENTER);
+    lv_obj_align_to(click_cont, image_button, LV_ALIGN_TOP_LEFT, 5, 5);
     lv_obj_remove_flag(click_cont, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_event_cb(click_cont, button_click_event, LV_EVENT_CLICKED, NULL);
 
@@ -229,6 +228,7 @@ static void button_click_event(lv_event_t * e)
     LV_UNUSED(e);
     LV_IMAGE_DECLARE(image_health_on);
     LV_IMAGE_DECLARE(image_health_off);
+#if LV_USE_LOTTIE == 1
     if(lv_obj_has_flag(lottie_ecg, LV_OBJ_FLAG_HIDDEN)) {
         lv_obj_remove_flag(lottie_ecg, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(heart_bg_2, LV_OBJ_FLAG_HIDDEN);
@@ -241,6 +241,7 @@ static void button_click_event(lv_event_t * e)
         lv_obj_remove_flag(heart_icon, LV_OBJ_FLAG_HIDDEN);
         lv_image_set_src(image_button, &image_health_off);
     }
+#endif
 }
 
 static void health_screen_events(lv_event_t * e)
@@ -251,12 +252,12 @@ static void health_screen_events(lv_event_t * e)
         lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
 
         if(dir == LV_DIR_LEFT) {
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_health_screen(), -384 - TRANSITION_GAP, 1000, 0);
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_sports_screen(), 384 + TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_health_screen(), -SCREEN_SIZE - TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_sports_screen(), SCREEN_SIZE + TRANSITION_GAP, 0, 1000, 0);
         }
         if(dir == LV_DIR_RIGHT) {
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_weather_screen(), -384 - TRANSITION_GAP, 0, 1000, 0);
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_health_screen(), 384 + TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_weather_screen(), -SCREEN_SIZE - TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_health_screen(), SCREEN_SIZE + TRANSITION_GAP, 1000, 0);
         }
 
     }

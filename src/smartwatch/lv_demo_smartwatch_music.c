@@ -105,9 +105,8 @@ void lv_demo_smartwatch_music_create(void)
         lv_style_set_text_color(&main_style, lv_color_white());
         lv_style_set_bg_color(&main_style, lv_color_hex(0x000000));
         lv_style_set_bg_opa(&main_style, LV_OPA_100);
-        lv_style_set_clip_corner(&main_style, true);
         lv_style_set_radius(&main_style, LV_RADIUS_CIRCLE);
-        lv_style_set_translate_x(&main_style, 384);
+        lv_style_set_translate_x(&main_style, SCREEN_SIZE);
 
         lv_style_set_bg_grad_color(&main_style, lv_color_hex(0x000000));
         lv_style_set_bg_main_stop(&main_style, 0);
@@ -138,8 +137,8 @@ void lv_demo_smartwatch_music_create(void)
     lv_obj_set_style_text_font(label_time, &font_inter_regular_28, 0);
 
     arc_volume = lv_arc_create(music_screen);
-    lv_obj_set_width(arc_volume, 350);
-    lv_obj_set_height(arc_volume, 350);
+    lv_obj_set_width(arc_volume, SCREEN_SIZE - 35);
+    lv_obj_set_height(arc_volume, SCREEN_SIZE - 35);
     lv_obj_set_align(arc_volume, LV_ALIGN_CENTER);
     lv_arc_set_value(arc_volume, 50);
     lv_arc_set_bg_angles(arc_volume, 345, 25);
@@ -276,10 +275,15 @@ void lv_demo_smartwatch_music_create(void)
     LV_IMAGE_DECLARE(image_volume_icon);
     image_volume = lv_image_create(music_screen);
     lv_image_set_src(image_volume, &image_volume_icon);
-    lv_obj_set_x(image_volume, 313);
-    lv_obj_set_y(image_volume, 274);
+    lv_obj_set_align(image_volume, LV_ALIGN_RIGHT_MID);
+    lv_obj_set_x(image_volume, SCREEN_SIZE * -0.1);
+    lv_obj_set_y(image_volume, SCREEN_SIZE * 0.25);
     lv_obj_add_flag(image_volume, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_remove_flag(image_volume, LV_OBJ_FLAG_SCROLLABLE);
+
+    LV_LOG_WARN("Aligned pos x: %d, y: %d", lv_pct(10), lv_pct(25));
+
+    LV_LOG_WARN("Volume pos x: %d, y: %d", lv_obj_get_x_aligned(image_volume), lv_obj_get_y_aligned(image_volume));
 
 
     /* Re-arrange the album objects */
@@ -472,14 +476,14 @@ static void music_screen_events(lv_event_t * e)
 
 
         if(dir == LV_DIR_LEFT) {
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_music_screen(), -384, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_music_screen(), -SCREEN_SIZE, 1000, 0);
             lv_smartwatch_animate_arc(arc_cont, ARC_EXPAND_RIGHT, 700, 300);
             lv_smartwatch_anim_opa(main_arc, 255, 500, 500);
             lv_smartwatch_anim_opa(overlay, 0, 100, 0);
         }
         if(dir == LV_DIR_RIGHT) {
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_sports_screen(), -384 - TRANSITION_GAP, 0, 1000, 0);
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_music_screen(), 384 + TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_sports_screen(), -SCREEN_SIZE - TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_music_screen(), SCREEN_SIZE + TRANSITION_GAP, 1000, 0);
         }
 
     }

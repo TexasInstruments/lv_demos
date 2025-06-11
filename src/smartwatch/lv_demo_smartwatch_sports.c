@@ -61,9 +61,8 @@ void lv_demo_smartwatch_sports_create(void)
         lv_style_set_text_color(&main_style, lv_color_white());
         lv_style_set_bg_color(&main_style, lv_color_hex(0x000000));
         lv_style_set_bg_opa(&main_style, LV_OPA_100);
-        lv_style_set_clip_corner(&main_style, true);
         lv_style_set_radius(&main_style, LV_RADIUS_CIRCLE);
-        lv_style_set_translate_x(&main_style, 384);
+        lv_style_set_translate_x(&main_style, SCREEN_SIZE);
 
     }
 
@@ -276,12 +275,12 @@ static void sports_screen_events(lv_event_t * e)
         lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
 
         if(dir == LV_DIR_LEFT) {
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_sports_screen(), -384 - TRANSITION_GAP, 1000, 0);
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_music_screen(), 384 + TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_sports_screen(), -SCREEN_SIZE - TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_music_screen(), SCREEN_SIZE + TRANSITION_GAP, 0, 1000, 0);
         }
         if(dir == LV_DIR_RIGHT) {
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_health_screen(), -384 - TRANSITION_GAP, 0, 1000, 0);
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_sports_screen(), 384 + TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_health_screen(), -SCREEN_SIZE - TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_sports_screen(), SCREEN_SIZE + TRANSITION_GAP, 1000, 0);
         }
 
     }
