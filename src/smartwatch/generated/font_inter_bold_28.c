@@ -3,6 +3,13 @@
  * Bpp: 4
  * Opts: --bpp 4 --size 28 --no-compress --font Inter_28pt-Bold.ttf --symbols ° --range 32-127 --format lvgl -o font_inter_bold_28.c
  ******************************************************************************/
+#ifdef __has_include
+    #if __has_include("lvgl.h")
+        #ifndef LV_LVGL_H_INCLUDE_SIMPLE
+            #define LV_LVGL_H_INCLUDE_SIMPLE
+        #endif
+    #endif
+#endif
 
 #ifdef LV_LVGL_H_INCLUDE_SIMPLE
     #include "lvgl.h"

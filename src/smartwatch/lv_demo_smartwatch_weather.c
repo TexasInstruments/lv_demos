@@ -58,9 +58,7 @@ void lv_demo_smartwatch_weather_create(void)
         lv_style_set_text_opa(&main_style, LV_OPA_100);
         lv_style_set_bg_color(&main_style, lv_color_hex(0x316bb6));
         lv_style_set_bg_opa(&main_style, LV_OPA_100);
-        lv_style_set_clip_corner(&main_style, true);
-        lv_style_set_radius(&main_style, LV_RADIUS_CIRCLE);
-        lv_style_set_translate_x(&main_style, 384);
+        lv_style_set_translate_x(&main_style, SCREEN_SIZE);
 
     }
 
@@ -77,6 +75,7 @@ void lv_demo_smartwatch_weather_create(void)
     LV_IMAGE_DECLARE(image_weather_bg);
     lv_obj_t * background = lv_image_create(weather_screen);
     lv_obj_set_pos(background, 0, 0);
+    lv_obj_set_align(background, LV_ALIGN_TOP_MID);
     lv_obj_set_size(background, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
     lv_image_set_src(background, &image_weather_bg);
 
@@ -89,7 +88,7 @@ void lv_demo_smartwatch_weather_create(void)
 
     lv_obj_t * main_cont = lv_obj_create(weather_screen);
     lv_obj_remove_style_all(main_cont);
-    lv_obj_set_size(main_cont, 384, LV_SIZE_CONTENT);
+    lv_obj_set_size(main_cont, lv_pct(100), LV_SIZE_CONTENT);
     lv_obj_set_layout(main_cont, LV_LAYOUT_FLEX);
     lv_obj_set_scroll_dir(main_cont, LV_DIR_VER);
     lv_obj_set_flex_flow(main_cont, LV_FLEX_FLOW_COLUMN);
@@ -101,7 +100,7 @@ void lv_demo_smartwatch_weather_create(void)
     /* Weather details container */
     lv_obj_t * cont = lv_obj_create(main_cont);
     lv_obj_remove_style_all(cont);
-    lv_obj_set_size(cont, 384, 335);
+    lv_obj_set_size(cont, lv_pct(100), 335);
     lv_obj_set_layout(cont, LV_LAYOUT_FLEX);
     lv_obj_set_flex_flow(cont, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -118,6 +117,7 @@ void lv_demo_smartwatch_weather_create(void)
     lv_obj_set_flex_flow(temp_cont, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(temp_cont, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
+#if LV_USE_LOTTIE == 1
     extern uint8_t lottie_sun_cloud[];
     extern size_t lottie_sun_cloud_size;
     lv_obj_t * sun_icon = lv_lottie_create(temp_cont);
@@ -136,7 +136,7 @@ void lv_demo_smartwatch_weather_create(void)
     LV_DRAW_BUF_DEFINE(sun_buf, 64, 64, LV_COLOR_FORMAT_ARGB8888);
     lv_lottie_set_draw_buf(sun_icon, &sun_buf);
 #endif
-
+#endif
 
     LV_FONT_DECLARE(font_inter_light_124);
     label = lv_label_create(temp_cont);
@@ -324,7 +324,7 @@ static lv_obj_t * create_forecast_container(lv_obj_t * parent, const char * titl
 {
     lv_obj_t * main_cont = lv_obj_create(parent);
     lv_obj_remove_style_all(main_cont);
-    lv_obj_set_size(main_cont, 384, LV_SIZE_CONTENT);
+    lv_obj_set_size(main_cont, lv_pct(100), LV_SIZE_CONTENT);
     lv_obj_set_layout(main_cont, LV_LAYOUT_FLEX);
     lv_obj_set_flex_flow(main_cont, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(main_cont, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -339,7 +339,7 @@ static lv_obj_t * create_forecast_container(lv_obj_t * parent, const char * titl
 
     lv_obj_t * forecast_cont = lv_obj_create(main_cont);
     lv_obj_remove_style_all(forecast_cont);
-    lv_obj_set_size(forecast_cont, 384, LV_SIZE_CONTENT);
+    lv_obj_set_size(forecast_cont, lv_pct(100), LV_SIZE_CONTENT);
     lv_obj_set_layout(forecast_cont, LV_LAYOUT_FLEX);
     lv_obj_set_flex_flow(forecast_cont, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(forecast_cont, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -407,7 +407,7 @@ static void weather_screen_events(lv_event_t * e)
         lv_dir_t dir = lv_indev_get_gesture_dir(lv_indev_active());
 
         if(dir == LV_DIR_RIGHT) {
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_weather_screen(), 384, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_weather_screen(), SCREEN_SIZE, 1000, 0);
             lv_smartwatch_animate_arc(arc_cont, ARC_EXPAND_RIGHT, 700, 300);
             lv_smartwatch_anim_opa(main_arc, 255, 500, 500);
             lv_smartwatch_anim_opa(overlay, 0, 100, 0);
@@ -416,8 +416,8 @@ static void weather_screen_events(lv_event_t * e)
         if(dir == LV_DIR_LEFT) {
 
             lv_smartwatch_anim_opa(overlay, 255, 100, 0);
-            lv_smartwatch_animate_x(lv_demo_smartwatch_get_weather_screen(), -384 - TRANSITION_GAP, 1000, 0);
-            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_health_screen(), 384 + TRANSITION_GAP, 0, 1000, 0);
+            lv_smartwatch_animate_x(lv_demo_smartwatch_get_weather_screen(), -SCREEN_SIZE - TRANSITION_GAP, 1000, 0);
+            lv_smartwatch_animate_x_from(lv_demo_smartwatch_get_health_screen(), SCREEN_SIZE + TRANSITION_GAP, 0, 1000, 0);
         }
 
     }

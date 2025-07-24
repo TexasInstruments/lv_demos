@@ -19,10 +19,6 @@ extern "C"
 
 #if LV_USE_DEMO_SMARTWATCH
 
-#if LV_USE_LOTTIE == 0
-O
-#endif
-
 /*********************
  *      DEFINES
  *********************/

@@ -24,7 +24,9 @@ extern "C"
  *      DEFINES
  *********************/
 
+#ifndef SCREEN_SIZE
 #define SCREEN_SIZE 384
+#endif
 #define TRANSITION_GAP 50
 
 /**********************
