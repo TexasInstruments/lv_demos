@@ -36,10 +36,3 @@ extern "C" {
 #endif
 
 #endif /*LV_DEMO_EXT_OUTER_H*/
-
-
-
-
-
-
-
