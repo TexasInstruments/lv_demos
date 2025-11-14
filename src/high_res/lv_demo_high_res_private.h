@@ -228,6 +228,7 @@ lv_obj_t * lv_demo_high_res_base_obj_create(const char * assets_path,
                                             const char * slides_path,
                                             lv_demo_high_res_exit_cb_t exit_cb);
 
+void lv_demo_high_res_app_edgeai(lv_obj_t * base_obj);
 void lv_demo_high_res_home(lv_obj_t * base_obj);
 void lv_demo_high_res_app_smart_home(lv_obj_t * base_obj);
 void lv_demo_high_res_app_ev_charging(lv_obj_t * base_obj);
