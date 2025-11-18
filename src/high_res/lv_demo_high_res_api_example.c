@@ -108,6 +108,7 @@ void lv_demo_high_res_api_example(const char * assets_path, const char * logo_pa
 static void exit_cb(lv_demo_high_res_api_t * api)
 {
     lv_obj_delete(api->base_obj);
+    exit(0);
 }
 
 static void output_subject_observer_cb(lv_observer_t * observer, lv_subject_t * subject)
